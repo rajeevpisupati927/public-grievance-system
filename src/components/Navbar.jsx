@@ -78,22 +78,24 @@ const Navbar = ({ onLogout }) => {
           </span>
         </div>
         
-        <div className="hidden md:flex gap-8">
-          <NavLink to="/" className={({isActive}) => `flex items-center gap-2 text-sm font-medium transition-colors hover:text-neon-cyan ${isActive ? 'text-neon-cyan outline-none' : 'text-gray-400'}`}>
-            <Home className="w-4 h-4" /> DASHBOARD
-          </NavLink>
-          <NavLink to="/portals" className={({isActive}) => `flex items-center gap-2 text-sm font-medium transition-colors hover:text-neon-blue ${isActive ? 'text-neon-blue outline-none' : 'text-gray-400'}`}>
-            <Grid className="w-4 h-4" /> PORTALS
-          </NavLink>
-          <NavLink to="/ai-info" className={({isActive}) => `flex items-center gap-2 text-sm font-medium transition-colors hover:text-neon-purple ${isActive ? 'text-neon-purple outline-none' : 'text-gray-400'}`}>
-            <Cpu className="w-4 h-4" /> AI CORE
-          </NavLink>
-          <NavLink to="/history" className={({isActive}) => `flex items-center gap-2 text-sm font-medium transition-colors hover:text-neon-cyan ${isActive ? 'text-neon-cyan outline-none' : 'text-gray-400'}`}>
-            <Activity className="w-4 h-4" /> HISTORY
-          </NavLink>
-          <NavLink to="/faq" className={({isActive}) => `flex items-center gap-2 text-sm font-medium transition-colors hover:text-neon-cyan ${isActive ? 'text-neon-cyan outline-none' : 'text-gray-400'}`}>
-            <HelpCircle className="w-4 h-4" /> FAQ
-          </NavLink>
+        <div className="flex items-center gap-4">
+          <div className="hidden md:flex gap-8">
+            <NavLink to="/" className={({isActive}) => `flex items-center gap-2 text-sm font-medium transition-colors hover:text-neon-cyan ${isActive ? 'text-neon-cyan outline-none' : 'text-gray-400'}`}>
+              <Home className="w-4 h-4" /> DASHBOARD
+            </NavLink>
+            <NavLink to="/portals" className={({isActive}) => `flex items-center gap-2 text-sm font-medium transition-colors hover:text-neon-blue ${isActive ? 'text-neon-blue outline-none' : 'text-gray-400'}`}>
+              <Grid className="w-4 h-4" /> PORTALS
+            </NavLink>
+            <NavLink to="/ai-info" className={({isActive}) => `flex items-center gap-2 text-sm font-medium transition-colors hover:text-neon-purple ${isActive ? 'text-neon-purple outline-none' : 'text-gray-400'}`}>
+              <Cpu className="w-4 h-4" /> AI CORE
+            </NavLink>
+            <NavLink to="/history" className={({isActive}) => `flex items-center gap-2 text-sm font-medium transition-colors hover:text-neon-cyan ${isActive ? 'text-neon-cyan outline-none' : 'text-gray-400'}`}>
+              <Activity className="w-4 h-4" /> HISTORY
+            </NavLink>
+            <NavLink to="/faq" className={({isActive}) => `flex items-center gap-2 text-sm font-medium transition-colors hover:text-neon-cyan ${isActive ? 'text-neon-cyan outline-none' : 'text-gray-400'}`}>
+              <HelpCircle className="w-4 h-4" /> FAQ
+            </NavLink>
+          </div>
           {onLogout && (
             <ProfileDropdown onLogout={onLogout} />
           )}
