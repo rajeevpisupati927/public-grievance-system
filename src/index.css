@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-dark-base text-gray-100;
+  }
+}
+
+/* Glassmorphism utilities */
+.glass-panel {
+  @apply bg-dark-panel backdrop-blur-md border border-dark-border shadow-2xl;
+}
+
+/* Custom glow borders */
+.glow-border-cyan {
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.15), inset 0 0 10px rgba(0, 243, 255, 0.05);
+  border-color: rgba(0, 243, 255, 0.4);
+}
+
+.glow-border-blue {
+  box-shadow: 0 0 15px rgba(0, 102, 255, 0.15), inset 0 0 10px rgba(0, 102, 255, 0.05);
+  border-color: rgba(0, 102, 255, 0.4);
+}
+
+.glow-border-magenta {
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.15), inset 0 0 10px rgba(255, 0, 255, 0.05);
+  border-color: rgba(255, 0, 255, 0.4);
+}
+
+.glow-border-purple {
+  box-shadow: 0 0 15px rgba(181, 0, 255, 0.15), inset 0 0 10px rgba(181, 0, 255, 0.05);
+  border-color: rgba(181, 0, 255, 0.4);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
