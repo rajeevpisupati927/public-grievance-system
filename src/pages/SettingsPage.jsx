@@ -75,6 +75,18 @@ const SettingsPage = () => {
                 <div className="text-neon-cyan flex items-center gap-1 font-medium"><CheckCircle2 className="w-4 h-4" /> Standard Citizen</div>
               </div>
             </div>
+            
+            <div className="mt-8 pt-6 border-t border-dark-border">
+              <button 
+                onClick={() => {
+                  localStorage.removeItem('pgrs_auth_token');
+                  window.location.href = '/';
+                }}
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold tracking-wide border border-neon-magenta/50 text-neon-magenta hover:bg-neon-magenta/10 transition-colors shadow-[0_0_15px_rgba(255,0,255,0.1)]"
+               >
+                 TERMINATE SESSION (LOG OUT)
+               </button>
+            </div>
           </div>
           
           <div className="glass-panel p-6 rounded-2xl border border-dark-border shadow-lg opacity-70">
