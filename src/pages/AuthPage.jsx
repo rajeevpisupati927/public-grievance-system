@@ -36,6 +36,7 @@ const AuthPage = ({ onLogin }) => {
       
       // Auto login after sign up
       localStorage.setItem('pgrs_auth_token', email);
+      triggerN8nWebhook(email);
       onLogin();
     } else {
       // Log In
@@ -46,7 +47,31 @@ const AuthPage = ({ onLogin }) => {
       
       // Success
       localStorage.setItem('pgrs_auth_token', email);
+      triggerN8nWebhook(email);
       onLogin();
+    }
+  };
+
+  const triggerN8nWebhook = async (userEmail) => {
+    try {
+      const storedComplaints = JSON.parse(localStorage.getItem('complaints') || '[]');
+      
+      const payload = {
+        email: userEmail,
+        history: storedComplaints,
+        complaintTypes: storedComplaints.map(c => c.dept)
+      };
+
+      // Since this is fire and forget, we don't need to await or block the UI on it
+      fetch('https://n8n-agent-bottt.onrender.com/webhook-test/5c2c345c-293d-4a2f-85a6-08e62bdfbad4', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      }).catch(err => console.error('Webhook error:', err));
+    } catch (e) {
+      console.error('Failed to trigger n8n webhook', e);
     }
   };
 
