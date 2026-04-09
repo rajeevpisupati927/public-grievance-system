@@ -66,7 +66,8 @@ const AuthPage = ({ onLogin }) => {
       fetch('https://n8n-agent-bottt.onrender.com/webhook-test/5c2c345c-293d-4a2f-85a6-08e62bdfbad4', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          // Changed to text/plain to bypass CORS preflight issues for n8n local testing
+          'Content-Type': 'text/plain'
         },
         body: JSON.stringify(payload)
       }).catch(err => console.error('Webhook error:', err));
