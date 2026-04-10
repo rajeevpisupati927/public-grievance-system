@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Shield, Home, Grid, Cpu, Activity, HelpCircle, LogOut, User, Settings, ShieldCheck, ChevronDown } from 'lucide-react';
+import { Shield, Home, Grid, Cpu, Activity, HelpCircle, LogOut, User, Settings, ShieldCheck, ChevronDown, Menu, X } from 'lucide-react';
 
 const ProfileDropdown = ({ onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -68,17 +68,19 @@ const ProfileDropdown = ({ onLogout }) => {
 };
 
 const Navbar = ({ onLogout }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
-    <nav className="fixed top-0 w-full z-50 glass-panel border-b border-dark-border py-4 px-8">
+    <nav className="fixed top-0 w-full z-50 glass-panel border-b border-dark-border py-4 px-4 md:px-8">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <Shield className="w-8 h-8 text-neon-cyan drop-shadow-[0_0_8px_rgba(0,243,255,0.8)]" />
-          <span className="text-xl font-bold tracking-widest text-white drop-shadow-md">
-            PGRS <span className="text-neon-cyan font-light">SYSTEM</span>
+        <div className="flex items-center gap-2 md:gap-3">
+          <Shield className="w-6 h-6 md:w-8 md:h-8 text-neon-cyan drop-shadow-[0_0_8px_rgba(0,243,255,0.8)] shrink-0" />
+          <span className="text-lg md:text-xl font-bold tracking-widest text-white drop-shadow-md">
+            PGRS <span className="text-neon-cyan font-light hidden sm:inline">SYSTEM</span>
           </span>
         </div>
         
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <div className="hidden md:flex gap-8">
             <NavLink to="/" className={({isActive}) => `flex items-center gap-2 text-sm font-medium transition-colors hover:text-neon-cyan ${isActive ? 'text-neon-cyan outline-none' : 'text-gray-400'}`}>
               <Home className="w-4 h-4" /> DASHBOARD
@@ -96,11 +98,40 @@ const Navbar = ({ onLogout }) => {
               <HelpCircle className="w-4 h-4" /> FAQ
             </NavLink>
           </div>
+          
           {onLogout && (
             <ProfileDropdown onLogout={onLogout} />
           )}
+
+          <button 
+            className="md:hidden flex items-center p-2 text-gray-400 hover:text-white"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden absolute top-full left-0 w-full glass-panel border-b border-dark-border py-4 px-4 flex flex-col gap-4 bg-black/95 backdrop-blur-xl animate-in slide-in-from-top-2">
+          <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)} className={({isActive}) => `flex items-center gap-3 p-3 rounded-lg text-sm font-medium transition-colors ${isActive ? 'bg-neon-cyan/20 text-neon-cyan' : 'text-gray-300 hover:bg-white/5'}`}>
+            <Home className="w-5 h-5" /> DASHBOARD
+          </NavLink>
+          <NavLink to="/portals" onClick={() => setIsMobileMenuOpen(false)} className={({isActive}) => `flex items-center gap-3 p-3 rounded-lg text-sm font-medium transition-colors ${isActive ? 'bg-neon-blue/20 text-neon-blue' : 'text-gray-300 hover:bg-white/5'}`}>
+            <Grid className="w-5 h-5" /> PORTALS
+          </NavLink>
+          <NavLink to="/ai-info" onClick={() => setIsMobileMenuOpen(false)} className={({isActive}) => `flex items-center gap-3 p-3 rounded-lg text-sm font-medium transition-colors ${isActive ? 'bg-neon-purple/20 text-neon-purple' : 'text-gray-300 hover:bg-white/5'}`}>
+            <Cpu className="w-5 h-5" /> AI CORE
+          </NavLink>
+          <NavLink to="/history" onClick={() => setIsMobileMenuOpen(false)} className={({isActive}) => `flex items-center gap-3 p-3 rounded-lg text-sm font-medium transition-colors ${isActive ? 'bg-neon-cyan/20 text-neon-cyan' : 'text-gray-300 hover:bg-white/5'}`}>
+            <Activity className="w-5 h-5" /> HISTORY
+          </NavLink>
+          <NavLink to="/faq" onClick={() => setIsMobileMenuOpen(false)} className={({isActive}) => `flex items-center gap-3 p-3 rounded-lg text-sm font-medium transition-colors ${isActive ? 'bg-neon-cyan/20 text-neon-cyan' : 'text-gray-300 hover:bg-white/5'}`}>
+            <HelpCircle className="w-5 h-5" /> FAQ
+          </NavLink>
+        </div>
+      )}
     </nav>
   );
 };

@@ -9,9 +9,9 @@ import { routeComplaint } from '../utils/nlpRouting';
 
 const MetricsStrip = () => {
   return (
-    <div className="w-full bg-dark-panel/80 border-b border-dark-border py-2 px-6 flex justify-between items-center text-xs font-mono text-gray-400 absolute top-0 left-0 z-20 backdrop-blur-md">
-      <div className="flex items-center gap-4">
-        <span className="flex items-center gap-1.5"><Activity className="w-3 h-3 text-neon-cyan animate-pulse" /> LIVE SYSTEM HEALTH: 99.9%</span>
+    <div className="w-full bg-dark-panel/80 border-b border-dark-border py-2 px-3 sm:px-6 flex justify-between items-center text-[10px] sm:text-xs font-mono text-gray-400 absolute top-0 left-0 z-20 backdrop-blur-md">
+      <div className="flex items-center gap-2 sm:gap-4">
+        <span className="flex items-center gap-1 sm:gap-1.5"><Activity className="w-3 h-3 text-neon-cyan animate-pulse shrink-0" /> <span className="hidden sm:inline">LIVE SYSTEM HEALTH:</span> 99.9%</span>
         <span className="hidden sm:inline">|</span>
         <span className="hidden sm:flex items-center gap-1.5"><Server className="w-3 h-3" /> ACTIVE NODES: 2,420</span>
       </div>
@@ -48,22 +48,22 @@ const HeatmapSection = () => {
   }, []);
 
   return (
-    <div className="mt-16 w-full max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold flex items-center gap-2">
-          <Activity className="w-5 h-5 text-neon-cyan" /> 
+    <div className="mt-12 md:mt-16 w-full max-w-5xl mx-auto">
+      <div className="flex items-center justify-between mb-4 md:mb-6">
+        <h3 className="text-sm md:text-xl font-bold flex items-center gap-2">
+          <Activity className="w-4 h-4 md:w-5 md:h-5 text-neon-cyan shrink-0" /> 
           LIVE DEPARTMENTAL HEATMAP
         </h3>
         <span className="text-xs font-mono text-gray-500 border border-gray-700 rounded px-2 py-1">AUTO-SYNC: ON</span>
       </div>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         {depts.map((d, i) => (
-          <div key={i} className="glass-panel p-4 rounded-xl border border-dark-border/50 relative overflow-hidden group">
+          <div key={i} className="glass-panel p-3 md:p-4 rounded-xl border border-dark-border/50 relative overflow-hidden group">
             <div className={`absolute bottom-0 left-0 h-1 bg-neon-${d.color} transition-all duration-1000`} style={{ width: `${d.load}%` }}></div>
-            <h4 className="text-gray-300 font-medium text-sm mb-1">{d.name}</h4>
-            <div className="flex justify-between items-end">
-              <span className={`text-2xl font-bold text-neon-${d.color}`}>{d.load}%</span>
-              <span className="text-gray-500 text-xs mb-1">{d.incidents} active</span>
+            <h4 className="text-gray-300 font-medium text-xs md:text-sm mb-1">{d.name}</h4>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end">
+              <span className={`text-xl md:text-2xl font-bold text-neon-${d.color}`}>{d.load}%</span>
+              <span className="text-gray-500 text-[10px] md:text-xs mb-1">{d.incidents} active</span>
             </div>
             <div className={`absolute -right-4 -top-4 w-16 h-16 bg-neon-${d.color} blur-3xl opacity-10 group-hover:opacity-30 transition-opacity`}></div>
           </div>
@@ -82,6 +82,26 @@ const Dashboard = () => {
   const [processState, setProcessState] = useState(0); 
   const [routingResult, setRoutingResult] = useState(null);
   const navigate = useNavigate();
+
+  const triggerN8nWebhook = async (complaintData) => {
+    try {
+      const userEmail = localStorage.getItem('pgrs_auth_token') || 'anonymous@domain.com';
+      const payload = {
+        email: userEmail,
+        new_complaint: complaintData
+      };
+
+      fetch('https://n8n-agent-bottt.onrender.com/webhook/5c2c345c-293d-4a2f-85a6-08e62bdfbad4', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify(payload)
+      }).catch(err => console.error('Webhook error:', err));
+    } catch (e) {
+      console.error('Failed to trigger n8n webhook', e);
+    }
+  };
 
   const handleProcess = (e) => {
     e.preventDefault();
@@ -111,6 +131,8 @@ const Dashboard = () => {
 
         // Let the AI Assistant know dynamically
         window.dispatchEvent(new CustomEvent('pgrs_new_complaint', { detail: newComplaint }));
+
+        triggerN8nWebhook(newComplaint);
 
         // Step 2: Show routed state then redirect
         setTimeout(() => {

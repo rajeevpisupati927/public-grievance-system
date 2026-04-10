@@ -36,7 +36,6 @@ const AuthPage = ({ onLogin }) => {
       
       // Auto login after sign up
       localStorage.setItem('pgrs_auth_token', email);
-      triggerN8nWebhook(email);
       onLogin();
     } else {
       // Log In
@@ -47,32 +46,7 @@ const AuthPage = ({ onLogin }) => {
       
       // Success
       localStorage.setItem('pgrs_auth_token', email);
-      triggerN8nWebhook(email);
       onLogin();
-    }
-  };
-
-  const triggerN8nWebhook = async (userEmail) => {
-    try {
-      const storedComplaints = JSON.parse(localStorage.getItem('complaints') || '[]');
-      
-      const payload = {
-        email: userEmail,
-        history: storedComplaints,
-        complaintTypes: storedComplaints.map(c => c.dept)
-      };
-
-      // Since this is fire and forget, we don't need to await or block the UI on it
-      fetch('https://n8n-agent-bottt.onrender.com/webhook-test/5c2c345c-293d-4a2f-85a6-08e62bdfbad4', {
-        method: 'POST',
-        headers: {
-          // Changed to text/plain to bypass CORS preflight issues for n8n local testing
-          'Content-Type': 'text/plain'
-        },
-        body: JSON.stringify(payload)
-      }).catch(err => console.error('Webhook error:', err));
-    } catch (e) {
-      console.error('Failed to trigger n8n webhook', e);
     }
   };
 
@@ -85,7 +59,7 @@ const AuthPage = ({ onLogin }) => {
           
           <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan via-neon-blue to-neon-magenta rounded-2xl blur opacity-30"></div>
           
-          <div className="bg-dark-panel/90 backdrop-blur-xl border border-dark-border/50 rounded-2xl p-8 shadow-2xl relative flex flex-col">
+          <div className="bg-dark-panel/90 backdrop-blur-xl border border-dark-border/50 rounded-2xl p-5 sm:p-8 shadow-2xl relative flex flex-col">
             
             <div className="flex flex-col items-center mb-8">
               <div className="p-3 glass-panel rounded-full border border-neon-cyan/50 shadow-[0_0_15px_rgba(0,243,255,0.3)] mb-4">
