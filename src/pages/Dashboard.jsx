@@ -93,6 +93,7 @@ const Dashboard = () => {
 
       fetch('https://n8n-agent-bottt.onrender.com/webhook/5c2c345c-293d-4a2f-85a6-08e62bdfbad4', {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'text/plain'
         },
