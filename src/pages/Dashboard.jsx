@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Bot, ArrowRight, Activity, Zap, ShieldAlert, Cpu, CheckCircle2, Languages, Server, Database } from 'lucide-react';
+import { Search, Bot, ArrowRight, Activity, Zap, ShieldAlert, Cpu, CheckCircle2, Languages, Server, Database, Shield } from 'lucide-react';
 import NeonCard from '../components/NeonCard';
 import GlowButton from '../components/GlowButton';
 import BackgroundAnimation from '../components/BackgroundAnimation';
@@ -11,6 +11,8 @@ const MetricsStrip = () => {
   return (
     <div className="w-full bg-dark-panel/80 border-b border-dark-border py-2 px-3 sm:px-6 flex justify-between items-center text-[10px] sm:text-xs font-mono text-gray-400 absolute top-0 left-0 z-20 backdrop-blur-md">
       <div className="flex items-center gap-2 sm:gap-4">
+        <span className="flex items-center gap-1 sm:gap-1.5"><Shield className="w-3 h-3 text-neon-cyan" /> <span className="hidden sm:inline">IDENTITY STATUS:</span> <span className="text-neon-cyan font-bold">VERIFIED</span></span>
+        <span className="hidden sm:inline">|</span>
         <span className="flex items-center gap-1 sm:gap-1.5"><Activity className="w-3 h-3 text-neon-cyan animate-pulse shrink-0" /> <span className="hidden sm:inline">LIVE SYSTEM HEALTH:</span> 99.9%</span>
         <span className="hidden sm:inline">|</span>
         <span className="hidden sm:flex items-center gap-1.5"><Server className="w-3 h-3" /> ACTIVE NODES: 2,420</span>
@@ -77,6 +79,17 @@ const Dashboard = () => {
   const [complaint, setComplaint] = useState('');
   const [name, setName] = useState('');
   const [isHinglish, setIsHinglish] = useState(false);
+  const [aadhaar, setAadhaar] = useState('0000 0000 0000');
+  
+  useEffect(() => {
+    const userEmail = localStorage.getItem('pgrs_auth_token');
+    if (userEmail) {
+      const users = JSON.parse(localStorage.getItem('pgrs_users') || '{}');
+      if (users[userEmail] && users[userEmail].aadhaar) {
+        setAadhaar(users[userEmail].aadhaar.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3'));
+      }
+    }
+  }, []);
   
   // Processing state: 0 = input, 1 = analyzing, 2 = routed/scores, 3 = resolved/redirecting
   const [processState, setProcessState] = useState(0); 
@@ -169,6 +182,14 @@ const Dashboard = () => {
               <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-tighter">
                 AI-DRIVEN <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-blue">REDRESSAL</span>
               </h1>
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <div className="px-3 py-1 rounded-full bg-neon-cyan/10 border border-neon-cyan/30 flex items-center gap-2 text-[10px] font-mono text-neon-cyan tracking-widest uppercase">
+                  <Shield size={12} /> Verified Identity
+                </div>
+                <div className="px-3 py-1 rounded-full bg-dark-panel border border-dark-border flex items-center gap-2 text-[10px] font-mono text-gray-500 tracking-widest uppercase">
+                  UIDAI: {aadhaar}
+                </div>
+              </div>
               <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-6">
                 Intelligent semantic routing for public grievances. Enter your issue below, and our autonomous NLP core will direct you to the exact departmental portal instantly.
               </p>
