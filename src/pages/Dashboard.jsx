@@ -86,7 +86,7 @@ const Dashboard = () => {
     if (userEmail) {
       const users = JSON.parse(localStorage.getItem('pgrs_users') || '{}');
       if (users[userEmail] && users[userEmail].aadhaar) {
-        setAadhaar(users[userEmail].aadhaar.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3'));
+        setAadhaar('XXXX XXXX ' + users[userEmail].aadhaar.slice(-4));
       }
     }
   }, []);
@@ -183,9 +183,6 @@ const Dashboard = () => {
                 AI-DRIVEN <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-blue">REDRESSAL</span>
               </h1>
               <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="px-3 py-1 rounded-full bg-neon-cyan/10 border border-neon-cyan/30 flex items-center gap-2 text-[10px] font-mono text-neon-cyan tracking-widest uppercase">
-                  <Shield size={12} /> Verified Identity
-                </div>
                 <div className="px-3 py-1 rounded-full bg-dark-panel border border-dark-border flex items-center gap-2 text-[10px] font-mono text-gray-500 tracking-widest uppercase">
                   UIDAI: {aadhaar}
                 </div>
@@ -193,19 +190,6 @@ const Dashboard = () => {
               <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-6">
                 Intelligent semantic routing for public grievances. Enter your issue below, and our autonomous NLP core will direct you to the exact departmental portal instantly.
               </p>
-              <div className="flex justify-center">
-                <button 
-                  onClick={() => setIsHinglish(!isHinglish)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
-                    isHinglish 
-                      ? 'bg-neon-cyan/20 border-neon-cyan/50 text-white shadow-[0_0_10px_rgba(0,243,255,0.3)]' 
-                      : 'glass-panel text-gray-400 border-dark-border hover:text-white'
-                  }`}
-                >
-                  <Languages className="w-4 h-4" /> 
-                  Hinglish Parsing: {isHinglish ? 'ON' : 'OFF'}
-                </button>
-              </div>
             </div>
 
             <InfoCarousel />
@@ -213,26 +197,38 @@ const Dashboard = () => {
             <div className="max-w-3xl mx-auto w-full">
               <NeonCard color="cyan" className="p-1 relative">
                 <form onSubmit={handleProcess} className="flex flex-col bg-black/50 rounded-xl overflow-hidden p-2 gap-2 relative z-10 w-full h-full min-h-0 min-w-0 max-w-full">
-                  <div className="flex items-center px-4 pt-2">
+                  <div className="flex items-center justify-between px-4 pt-2">
                     <input
                       type="text"
                       placeholder="Your Name (optional)"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full bg-transparent border-b border-dark-border/50 text-white px-2 py-2 focus:border-neon-cyan focus:outline-none focus:ring-0 text-sm placeholder-gray-600 transition-colors shrink-1 min-w-0"
+                      className="bg-transparent border-b border-dark-border/50 text-white px-2 py-2 focus:border-neon-cyan focus:outline-none focus:ring-0 text-sm placeholder-gray-600 transition-colors shrink-1 min-w-0"
                     />
+                    <button 
+                      type="button"
+                      onClick={() => setIsHinglish(!isHinglish)}
+                      className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-mono border transition-colors ${
+                        isHinglish 
+                          ? 'bg-neon-cyan/20 border-neon-cyan/50 text-white shadow-[0_0_10px_rgba(0,243,255,0.3)]' 
+                          : 'glass-panel text-gray-500 border-dark-border hover:text-white'
+                      }`}
+                    >
+                      <Languages className="w-3 h-3" /> 
+                      HINGLISH: {isHinglish ? 'ON' : 'OFF'}
+                    </button>
                   </div>
-                  <div className="relative flex items-center w-full max-w-full">
-                    <Bot className="w-8 h-8 text-neon-cyan ml-4 mr-2 flex-shrink-0" />
-                    <input
-                      type="text"
+                  <div className="relative flex items-start w-full max-w-full">
+                    <Bot className="w-8 h-8 text-neon-cyan ml-4 mr-2 mt-4 flex-shrink-0" />
+                    <textarea
                       placeholder={placeholderText}
                       value={complaint}
                       onChange={(e) => setComplaint(e.target.value)}
-                      className="flex-1 bg-transparent border-none text-white px-4 py-4 focus:outline-none focus:ring-0 text-lg placeholder-gray-600 w-full min-w-0 block shrink-1"
+                      rows={3}
+                      className="flex-1 bg-transparent border-none text-white px-4 py-4 focus:outline-none focus:ring-0 text-lg placeholder-gray-600 w-full min-w-0 block shrink-1 resize-none"
                     />
-                    <GlowButton type="submit" color="cyan" className="ml-2 flex flex-shrink-0 items-center justify-center gap-2 px-4 sm:px-6 py-2.5 max-w-[150px]">
-                      <span className="hidden sm:inline">ROUTER</span> <Zap className="w-4 h-4 flex-shrink-0" />
+                    <GlowButton type="submit" color="cyan" className="ml-2 mt-4 flex flex-shrink-0 items-center justify-center gap-2 px-4 sm:px-6 py-2.5 max-w-[150px]">
+                      <span className="hidden sm:inline text-xs">ENTER COMPLAINT</span> <Zap className="w-4 h-4 flex-shrink-0" />
                     </GlowButton>
                   </div>
                 </form>
