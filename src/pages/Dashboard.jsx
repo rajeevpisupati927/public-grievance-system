@@ -195,7 +195,7 @@ const Dashboard = () => {
             <InfoCarousel />
 
             <div className="max-w-3xl mx-auto w-full">
-              <NeonCard color="cyan" className="p-1 relative">
+              <NeonCard color="cyan" className="p-1 relative" hoverable={false}>
                 <form onSubmit={handleProcess} className="flex flex-col bg-black/50 rounded-xl overflow-hidden p-2 gap-2 relative z-10 w-full h-full min-h-0 min-w-0 max-w-full">
                   <div className="flex items-center justify-between px-4 pt-2">
                     <input
@@ -224,8 +224,8 @@ const Dashboard = () => {
                       placeholder={placeholderText}
                       value={complaint}
                       onChange={(e) => setComplaint(e.target.value)}
-                      rows={3}
-                      className="flex-1 bg-transparent border-none text-white px-4 py-4 focus:outline-none focus:ring-0 text-lg placeholder-gray-600 w-full min-w-0 block shrink-1 resize-none"
+                      rows={4}
+                      className="flex-1 bg-transparent border-none text-white px-4 py-4 focus:outline-none focus:ring-0 text-lg placeholder-gray-600 w-full min-w-0 block shrink-1 resize-none relative z-20 min-h-[120px]"
                     />
                     <GlowButton type="submit" color="cyan" className="ml-2 mt-4 flex flex-shrink-0 items-center justify-center gap-2 px-4 sm:px-6 py-2.5 max-w-[150px]">
                       <span className="hidden sm:inline text-xs">ENTER COMPLAINT</span> <Zap className="w-4 h-4 flex-shrink-0" />
